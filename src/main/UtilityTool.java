@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -21,16 +22,27 @@ public class UtilityTool {
 	
 	public BufferedImage loadImage(String imagePath, int tileSize) {
 
-		
 		BufferedImage image = null;
+
 		try {
-			// here
-			image = ImageIO.read(getClass().getResourceAsStream(imagePath));
-			image = scaleImage(image, tileSize, tileSize);
+			// Use File and ImageIO.read to load from disk
+
+			File file = new File(imagePath);  // Create a File object for the image path
+
+			if (!file.exists()) {  // Check if the file exists
+				System.out.println("File not found: " + imagePath);
+				return null;
+			}
+
+			image = ImageIO.read(file);  // Read the image from the file
+			image = scaleImage(image, tileSize, tileSize);  // Scale the image
+
 		} catch (IOException e) {
-			System.out.println("ERROR");
+
+			System.out.println("ERROR loading image: " + imagePath);
 			e.printStackTrace();
 		}
-		return image;		
+		
+		return image;
 	}
 }

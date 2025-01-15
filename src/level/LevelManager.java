@@ -35,7 +35,7 @@ public class LevelManager {
 		
 		mapTiles = new int[gp.WORLD_ROW][gp.WORLD_COL];
 		
-		mapTiles = readMapFileToArray("C:\\Users\\alber\\eclipse-workspace\\Infecto Pixel V3\\res\\map.txt", mapTiles);
+		mapTiles = readMapFileToArray("res/map.txt", mapTiles);
 
 		setStaticObstacles();		
 	}
@@ -44,10 +44,10 @@ public class LevelManager {
 		
 		uTool = new UtilityTool();
 		
-		ground = uTool.loadImage("/levelTiles/ground.png",  gp.TILE_SIZE);
-		grass = uTool.loadImage("/levelTiles/grass.png",  gp.TILE_SIZE);
-		wood = uTool.loadImage("/levelTiles/wood.png",  gp.TILE_SIZE);
-		brick = uTool.loadImage("/levelTiles/brick.png",  gp.TILE_SIZE);
+		ground = uTool.loadImage("res/levelTiles/ground.png",  gp.TILE_SIZE);
+		grass = uTool.loadImage("res/levelTiles/grass.png",  gp.TILE_SIZE);
+		wood = uTool.loadImage("res/levelTiles/wood.png",  gp.TILE_SIZE);
+		brick = uTool.loadImage("res/levelTiles/brick.png",  gp.TILE_SIZE);
 	}
 	
 	private int[][] readMapFileToArray(String filePath, int[][] tiles) {
