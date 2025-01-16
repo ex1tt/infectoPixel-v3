@@ -1,16 +1,16 @@
 package pathFinding;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import main.Panel;
-
 
 public class PathFinder {
 	
 	Panel gp;
 	
 	public Node nodes[][];
-	private ArrayList<Node> openNodes;
+	private PriorityQueue<Node> openNodes;
 	public ArrayList<Node> pathNodes;
 	
 	private Node currentNode;
@@ -28,11 +28,11 @@ public class PathFinder {
 		
 		this.gp = gp;	
 	
-		openNodes = new ArrayList<>();
+		openNodes = new PriorityQueue<>();
 		pathNodes = new ArrayList<>();
 	}
 	
-	public void pathFind(int startRow, int startCol, int targetRow, int targetCol, boolean[][] staticSolidCoords) {
+	public void pathFind(int startRow, int startCol, int targetRow, int targetCol) {
 		
 		pathFound = false;
 		noPath = false;
@@ -42,27 +42,18 @@ public class PathFinder {
 		openNodes.clear();
 		pathNodes.clear();
 		
+		// Setting nodes
 		setMapNodes();
+		setTargetNode(targetRow,targetCol);
         setStartNode(startRow, startCol);
-        setTargetNode(targetRow,targetCol);
         setSolidNodes(staticSolidCoords);
+
+		// Need to look at the path finding algo... (for optimizations...)
+
         getCost(startNode);
+
+		// Gets the path...
         getPath();
-	}
-	
-	// Set solid nodes within array
-	private void setSolidNodes(boolean[][] staticSolidCoords) {
-		
-		for(int i=0; i<gp.WORLD_ROW; i++) {
-			for(int z=0; z<gp.WORLD_COL; z++) {
-				if(staticSolidCoords[i][z]) {
-					nodes[i][z].solid = true;
-				}
-				else {
-					nodes[i][z].solid = false;
-				}
-			}
-		}
 	}
 
 	// Fill 2D array with nodes
@@ -80,7 +71,6 @@ public class PathFinder {
 		
 		startNode = nodes[row][col];	
 		openNode(startNode);
-		
 		currentNode = startNode;
 	}
 	
@@ -88,7 +78,18 @@ public class PathFinder {
 	private void setTargetNode(int row, int col) {	
 		targetNode = nodes[row][col];		
 	}
+
+	// Set solid nodes within array
+	private void setSolidNodes(boolean[][] staticSolidCoords) {
+		
+		for(int i=0; i<gp.WORLD_ROW; i++) {
+			for(int z=0; z<gp.WORLD_COL; z++) {
+				nodes[i][z].solid = (staticSolidCoords[i][z] == true);
+			}
+		}
+	}
 	
+	// Calculate cost of an individual node
 	private void getCost(Node node) {
 		
 	    // G COST
@@ -104,96 +105,94 @@ public class PathFinder {
 	    // F COST
 	    node.fCost = node.gCost + node.hCost;
 	}
-	
-	private void openNode(Node node) {
 
-		if((!node.open) && !(node.closed) && !(node.solid)) {
-			
-			node.open = true;
-			openNodes.add(node);
-			node.parent = currentNode;
-		}
+	// Method to get path from startNode to TargetNode
+	private void getPath() {
+		
+		while(!pathFound && !noPath) {
+			search();
+        }
 	}
 	
 	private void search() {
 
-	    if (pathFound) {
-	        return;
-	    }
-
 	    if (openNodes.isEmpty()) {
 	        noPath = true;
+			System.out.println("Error: No path...");
 	        return;
 	    }
 
-	    Node bestNode = openNodes.get(0);
+		// Sets the current node to the node with the least f cost and or g cost through priority queue
+		currentNode = openNodes.poll();
 
-		// Finds and sets the best node
-	    for (Node node : openNodes) {
-	        if (node.fCost < bestNode.fCost ||
-	            (node.fCost == bestNode.fCost && node.gCost < bestNode.gCost)) {
-	            bestNode = node;
-	        }
-	    }
-
-	    currentNode = bestNode;  // sets the current node to the node with the least cost
-	    openNodes.remove(currentNode);
+		// Close the node to ensure it isn't ever added back to open nodes
 	    currentNode.closed = true;
 
+		// If current node is our target node, set path nodes
 	    if (currentNode == targetNode) {
 	        pathFound = true;
 	        setPathNodes();
 	        return;
 	    }
 
-	    int col = currentNode.col;
-	    int row = currentNode.row;
+		// Search current nodes neighbours...
+		searchNeigbours(currentNode);
+	}			
+
+	// Method to search a nodes neighbours and add them to open nodes if possible
+	private void searchNeigbours(Node curNode) {
+
+		int col = curNode.col;
+	    int row = curNode.row;
 
 	    int[] dy = {-1, 0, 0, 1}; // Offsets for columns
 	    int[] dx = {0, -1, 1, 0}; // Offsets for rows
 
+		//Check current nodes horizontally and vertically adjacent neighbours
 	    for (int i = 0; i < 4; i++) {
-	        int newRow = row + dy[i];
-	        int newCol = col + dx[i];
+	        int nRow = row + dy[i];
+	        int nCol = col + dx[i];
 
-	        if (newRow >= 0 && newRow < gp.WORLD_ROW && newCol >= 0 && newCol < gp.WORLD_COL) {
-	            if (!(nodes[newRow][newCol].solid) && !(nodes[newRow][newCol].closed)) {
-	                openNode(nodes[newRow][newCol]);
-	                getCost(nodes[newRow][newCol]);
+			// If neigbour is in bounds
+	        if (nRow >= 0 && nRow < gp.WORLD_ROW && nCol >= 0 && nCol < gp.WORLD_COL) {
+
+				// If neigbour has not been visited or a solid node
+	            if (!(nodes[nRow][nCol].solid) && !(nodes[nRow][nCol].closed)) {
+	                openNode(nodes[nRow][nCol]);
+	                //getCost(nodes[nRow][nCol]);
 	            }
 	        }
 	    }
-	}			
-	
-	private void getPath() {
-		
-		while(!(pathFound)) {
-			if(noPath) {
-				System.out.println("ERROR: NO PATH ");	// NO PATH POSSIBLE
-				break;
-			}
-			else {
-				search();
-			}
-        }
 	}
+
+	// Method to open a node
+	private void openNode(Node node) {
+
+        if (!node.open && !node.closed) {
+
+            node.open = true;
+            node.parent = currentNode;
+            getCost(node);
+            openNodes.add(node);
+        }
+    }
 	
+	// If target node is reached, backtrack and find path
 	private void setPathNodes() {
 		
-		Node temp = targetNode;
+		// Set current path node to target node
+		Node curPathNode = targetNode;
+		pathNodes.add(curPathNode);
 		
-		pathNodes.add(targetNode); //adds targetNode to list
-		
-		while(temp != null && temp != startNode) {
-			temp = temp.parent;
-			
-			if(temp != null && temp != startNode) {
-				temp.path = true;
-				pathNodes.add(temp);
-			}
+		while(curPathNode.parent != null && curPathNode.parent != startNode) {
+
+			// Backtrack
+			curPathNode = curPathNode.parent;
+			pathNodes.add(curPathNode);
 		}		
 	}
 	
+	// Update path
 	public void updatePath(int startX, int startY, int targetX, int targetY) {
 		
 		int startRow = startX / gp.TILE_SIZE;
@@ -201,6 +200,6 @@ public class PathFinder {
 		int targetRow = targetX / gp.TILE_SIZE;
 		int targetCol = targetY / gp.TILE_SIZE;
 
-		pathFind(startRow, startCol, targetRow, targetCol, staticSolidCoords);	
+		pathFind(startRow, startCol, targetRow, targetCol);	
 	}
 }
