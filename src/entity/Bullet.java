@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -16,12 +15,12 @@ public class Bullet extends Entity {
 	public int bulletMaxDuration;
 	public int bulletDurationCount;
 	
-	public BufferedImage current;
+	public BufferedImage currentImage;
 	
-	public BufferedImage up;
-	public BufferedImage down;
-	public BufferedImage left;
-	public BufferedImage right;
+	public BufferedImage upImage;
+	public BufferedImage downImage;
+	public BufferedImage leftImage;
+	public BufferedImage rightImage;
 
 	public Bullet(Panel gp, String playerDirection) {
 		
@@ -34,9 +33,9 @@ public class Bullet extends Entity {
 		worldX = gp.player.worldX;
 		worldY = gp.player.worldY;
 	
+		// Currently hard coded...
 		speed = 35;
 		solidArea = new Rectangle(gp.TILE_SIZE/3, gp.TILE_SIZE/3, gp.TILE_SIZE/3, gp.TILE_SIZE/3);
-		color = Color.black;
 		
 		bulletMaxDuration = 60;
 	}
@@ -45,47 +44,54 @@ public class Bullet extends Entity {
 		
 		uTool = new UtilityTool();
 		
-		up = uTool.loadImage("res/bulletSprites/bullet_up.png",  gp.TILE_SIZE);	
-		down = uTool.loadImage("res/bulletSprites/bullet_down.png",  gp.TILE_SIZE);	
-		left = uTool.loadImage("res/bulletSprites/bullet_left.png",  gp.TILE_SIZE);	
-		right = uTool.loadImage("res/bulletSprites/bullet_right.png",  gp.TILE_SIZE);
+		upImage = uTool.loadImage("res/bulletSprites/bullet_up.png",  gp.TILE_SIZE);	
+		downImage = uTool.loadImage("res/bulletSprites/bullet_down.png",  gp.TILE_SIZE);	
+		leftImage = uTool.loadImage("res/bulletSprites/bullet_left.png",  gp.TILE_SIZE);	
+		rightImage = uTool.loadImage("res/bulletSprites/bullet_right.png",  gp.TILE_SIZE);
 		
 	}
 	
 	public void update() {
 		
-		if(bulletDurationCount > bulletMaxDuration || gp.cChecker.checkScreenCollision(this) || gp.cChecker.checkSolidCollision(this)) {	// Destroys bullet after (bulletMaxDuration) frames
+		// Conditional for destroying bullet
+		if(bulletDurationCount > bulletMaxDuration || 
+		gp.cChecker.checkScreenCollision(this) || 
+		gp.cChecker.checkSolidCollision(this)) {
 			destroyBullet = true;
 			return;
 		}
+
+		// Handles bulled direction
 		switch(direction) {
 		case "up":
-			current = up;
+			currentImage = upImage;
 			worldY -= speed;
 			break;	
 		case "down":
-			current = down;
+			currentImage = downImage;
 			worldY += speed;
 			break;	
 		case "left":
-			current = left;
+			currentImage = leftImage;
 			worldX -= speed;
 			break;	
 		case "right":
-			current = right;
+			currentImage = rightImage;
 			worldX += speed;
 			break;	
-		}		
+		}	
+		// Update bullet duration count	
 		bulletDurationCount ++;
 	}
 	
 	public void draw(Graphics2D g2) {	
 		
+		// If tile is visible -> draw on screen
 		if(gp.levelMng.isTileVisibleOnScreen(worldX, worldY)) {
 			screenX = worldX - gp.player.worldX + gp.player.screenX;
 			screenY = worldY - gp.player.worldY + gp.player.screenY;	
 			
-			g2.drawImage(current, screenX, screenY, null);
+			g2.drawImage(currentImage, screenX, screenY, null);
 		}	
 	}
 }

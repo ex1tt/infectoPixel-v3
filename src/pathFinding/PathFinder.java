@@ -11,7 +11,6 @@ public class PathFinder {
 	
 	public Node nodes[][];
 	private ArrayList<Node> openNodes;
-	private ArrayList<Node> closedNodes;
 	public ArrayList<Node> pathNodes;
 	
 	private Node currentNode;
@@ -30,7 +29,6 @@ public class PathFinder {
 		this.gp = gp;	
 	
 		openNodes = new ArrayList<>();
-		closedNodes = new ArrayList<>();
 		pathNodes = new ArrayList<>();
 	}
 	
@@ -42,7 +40,6 @@ public class PathFinder {
 		nodes = new Node[gp.WORLD_ROW][gp.WORLD_COL];
 		
 		openNodes.clear();
-		closedNodes.clear();
 		pathNodes.clear();
 		
 		setMapNodes();
@@ -53,6 +50,7 @@ public class PathFinder {
         getPath();
 	}
 	
+	// Set solid nodes within array
 	private void setSolidNodes(boolean[][] staticSolidCoords) {
 		
 		for(int i=0; i<gp.WORLD_ROW; i++) {
@@ -67,7 +65,8 @@ public class PathFinder {
 		}
 	}
 
-	private void setMapNodes() {		// Fill 2D array with nodes
+	// Fill 2D array with nodes
+	private void setMapNodes() {
 		
 		for(int i=0; i<gp.WORLD_ROW; i++) {
 			for(int z=0; z<gp.WORLD_COL; z++) {	
@@ -76,6 +75,7 @@ public class PathFinder {
 		}
 	}
 	
+	// Set the start node
 	private void setStartNode(int row, int col) {
 		
 		startNode = nodes[row][col];	
@@ -84,6 +84,7 @@ public class PathFinder {
 		currentNode = startNode;
 	}
 	
+	// Set the target node
 	private void setTargetNode(int row, int col) {	
 		targetNode = nodes[row][col];		
 	}
@@ -115,9 +116,11 @@ public class PathFinder {
 	}
 	
 	private void search() {
+
 	    if (pathFound) {
 	        return;
 	    }
+
 	    if (openNodes.isEmpty()) {
 	        noPath = true;
 	        return;
@@ -125,6 +128,7 @@ public class PathFinder {
 
 	    Node bestNode = openNodes.get(0);
 
+		// Finds and sets the best node
 	    for (Node node : openNodes) {
 	        if (node.fCost < bestNode.fCost ||
 	            (node.fCost == bestNode.fCost && node.gCost < bestNode.gCost)) {
@@ -135,7 +139,6 @@ public class PathFinder {
 	    currentNode = bestNode;  // sets the current node to the node with the least cost
 	    openNodes.remove(currentNode);
 	    currentNode.closed = true;
-	    closedNodes.add(currentNode);
 
 	    if (currentNode == targetNode) {
 	        pathFound = true;

@@ -10,10 +10,12 @@ public class ZombieManager {
 	Panel gp;
 	public ArrayList<Zombie> zombies;
 	
+	// Needs to be changed to incorporate waves
 	public ZombieManager(Panel gp) {
 		
 		this.gp = gp;	
 		
+		// This keeps a track of current live zombies...
 		zombies = new ArrayList<>();	
 		
 		zombies.add(new Zombie(gp, 4*gp.TILE_SIZE, 6*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));

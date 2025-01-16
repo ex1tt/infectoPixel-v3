@@ -6,19 +6,17 @@ import entity.Entity;
 
 public class CollisionChecker {
 	
-	
 	Panel gp;
 	
 	public CollisionChecker(Panel gp) {
 		
 		this.gp = gp;
-		
 	}
 
 	public boolean checkEntityCollision(Entity entity1, Entity entity2) {
 		
 	    Rectangle solidArea1 = entity1.solidArea;	// Entity Colliding
-	    Rectangle solidArea2 = entity2.solidArea;	// Entity Collided
+	    Rectangle solidArea2 = entity2.solidArea;	// Entity Being Collided
 
 	    int entity1LeftX = entity1.worldX + solidArea1.x;
 	    int entity1RightX = entity1LeftX + solidArea1.width;

@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -32,6 +31,8 @@ public class Player extends Entity {
 	private int spriteNum = 1;
 	public int spriteCounter = 1;
 
+	private final int SPRITE_UPDATE_CYCLE = 20;
+
 	public Player(Panel gp) { 
 		
 		super(gp);
@@ -40,9 +41,11 @@ public class Player extends Entity {
 		
 		current = behind2;
 		
+		// Players screen coordinates (static)
 		screenX = gp.SCREEN_WIDTH / 2;
 		screenY = gp.SCREEN_HEIGHT /2;
 		
+		// Players starting world coordinates
 		worldX = gp.TILE_SIZE * 10;
 		worldY = gp.TILE_SIZE * 10;
 		
@@ -51,7 +54,6 @@ public class Player extends Entity {
 		
 		speed = 4;		
 		solidArea = new Rectangle(20,20, width/2-10, height/2-10);		
-		color = Color.red;
 		health = MAX_HEALTH;		
 		
 	}
@@ -74,103 +76,95 @@ public class Player extends Entity {
 		behind3 = uTool.loadImage("res/playerSprites/player_behind_right.png",  gp.TILE_SIZE);
 		left3 = uTool.loadImage("res/playerSprites/player_left_right.png",  gp.TILE_SIZE);
 		right3 = uTool.loadImage("res/playerSprites/player_right_right.png",  gp.TILE_SIZE);
-		
 
 	}
 	
+	// Method to damage player health
 	public void damage() {
 		
-		health -=1;
-		
-		switch(health) {
-		case 2 :
-			color = Color.LIGHT_GRAY;
-			break;
-		case 1:
-			color = Color.DARK_GRAY;
-			break;
-		case 0:
-			color = Color.BLACK;
-			System.exit(0);
-			break;
-		}		
+		health --;
+
+		// This code needs to be changed....
+		if(health == 0) System.exit(0);
 	}
 	
 	public void update() {
 		
-		checkCollision();
-			
+		// Check for collision
+		collision = checkCollision();
+
+		// If any of these keys were pressed update sprite and move player
+		if(gp.keyH.up || gp.keyH.down || gp.keyH.left || gp.keyH.right) {
+			updateDirectionAndSprite();
+			movePlayer();
+		}
+
+		updateSpriteAnimation();
+	} 
+
+	private void updateDirectionAndSprite() {
+
 		if(gp.keyH.up) {
-			
-			if(spriteNum == 1) {
-				current = behind2;
-			}
-			else {
-				current = behind3;
-			}
-			
+
+			// Set direction
 			direction = "up";	
-			if(!collision) {
-				worldY -= speed;
-			}
+			current = (spriteNum == 1) ? behind2 : behind3;
 		}
 		if(gp.keyH.down) {
-			
-			if(spriteNum == 1) {
-				current = front2;
-			}
-			else {
-				current = front3;
-			}
-			
+
+			// Set direction
 			direction = "down";	
-			if(!collision) {
-				worldY += speed;
-			}
+			current = (spriteNum == 1) ? front2 : front3;
 		}
 		if(gp.keyH.left) {
-			
-			if(spriteNum == 1) {
-				current = left2;
-			}
-			else {
-				current = left3;
-			}
-			
-			direction = "left";
-			if(!collision) {
-				worldX -= speed;
-			}
+
+			// Set direction
+			direction = "left";				
+			current = (spriteNum == 1) ? left2 : left3;
 		}
 		if(gp.keyH.right) {
-			
-			if(spriteNum == 1) {
-				current = right2;
+
+			// Set direction
+			direction = "right";				
+			current = (spriteNum == 1) ? right2 : right3;
+		}
+	}
+
+	// Method to update x and y coords of player
+	private void movePlayer() {
+
+		if(!collision) {
+
+			if(gp.keyH.up) {	
+				if (!collision) worldY -= speed;
 			}
-			else {
-				current = right3;
+			if(gp.keyH.down) {
+				if (!collision) worldY += speed;
 			}
-			
-			direction = "right";
-			if(!collision) {
-				worldX += speed;
+			if(gp.keyH.left) {
+				if (!collision) worldX -= speed;
+			}
+			if(gp.keyH.right) {
+				if (!collision) worldX += speed;
 			}
 		}
-		
-		spriteCounter +=1;
-		if(spriteCounter >20) {
-			if(spriteNum == 1) {
-				spriteNum =2;
-			}
-			else {
-				spriteNum = 1;
-			}
+	}
+
+	// Update sprite animation after x amount of loops (currently 20)
+	private void updateSpriteAnimation() {
+
+		spriteCounter ++;
+
+		if(spriteCounter > SPRITE_UPDATE_CYCLE) {
+
+			spriteNum = (spriteNum == 1) ? 2 : 1;
+
 			spriteCounter = 0;
 		}
-	} 
+	}
 	
-	private void checkCollision() {		
-		collision = (!isInScreenBounds() || gp.cChecker.checkSolidCollision(this));
+	private boolean checkCollision() {		
+		return (!isInScreenBounds() || gp.cChecker.checkSolidCollision(this));
 	}
 	
 	private boolean isInScreenBounds() {

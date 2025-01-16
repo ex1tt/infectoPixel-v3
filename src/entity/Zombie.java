@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -55,8 +54,6 @@ public class Zombie extends Entity {
 		
 		solidArea = new Rectangle(1, 1, gp.TILE_SIZE-20, gp.TILE_SIZE-20);
 		
-		color = new Color(124,252,0);
-		
 		random = new Random();
 		
 		speed = random.nextDouble(2.5, 3);
@@ -95,26 +92,19 @@ public class Zombie extends Entity {
 		current = null;
 		
 		health -=1;
-		
-		switch(health) {
-		case 2 :
-			color = new Color(50,205,50);
-			break;
-		case 1:
-			color = new Color(0,100,0);
-			break;
-		case 0:
-			color = new Color(0,100,0);
-			kill = true;
-			break;
-		}	
+
+		if(health == 0) kill = true;
 	}
 	
 	public void attack() {
 		
+		// If attack is possible
 		if(canAttack()) {
+
 			gp.player.damage();
-			zombieReloadCount = 0;
+
+			// reset reload count back to zero
+ 			zombieReloadCount = 0;
 		}
 	}
 	
@@ -125,6 +115,8 @@ public class Zombie extends Entity {
 	private void moveInDirection(PathFinder pf, int zx, int zy) {
 		
 		direction = getDirection(pf, zx, zy);
+		
+		// Re-look this direction sprite logic...
 		switch(direction) {
 			case "up":	
 				if(spriteNum == 1) {
@@ -169,7 +161,7 @@ public class Zombie extends Entity {
 		}
 		
 		spriteCounter +=1;
-		if(spriteCounter >20 * speed) {
+		if(spriteCounter > 20 * speed) {
 			if(spriteNum == 1) {
 				spriteNum =2;
 			}
@@ -182,49 +174,56 @@ public class Zombie extends Entity {
 	
 	private String getDirection(PathFinder pf, int x, int y) {
 		
-	    int leftX = x + solidArea.x;
-	    int rightX = leftX + solidArea.width;
-	    int topY = y + solidArea.y;
-	    int bottomY = topY + solidArea.height;  // Fixed this line
-
-	    if (pf.pathNodes.isEmpty()) {
-	        return "";
-	    }
-	    
-	    int nextX = pf.pathNodes.get(pf.pathNodes.size() - 1).row * gp.TILE_SIZE;
-        int nextY = pf.pathNodes.get(pf.pathNodes.size() - 1).col * gp.TILE_SIZE;
-   
-	    switch(direction) {
-	    case "up":
-	    	if(checkUp(nextX, nextY, rightX, leftX, topY)) {
-	    		return "up";
-	 		}
-	    case "down":
-	    	if(checkDown(nextX, nextY, rightX, leftX, topY)) {
-	    		return "down";
-	 		}
-	    case "left":
-	    	if(checkLeft(nextX, nextY, leftX, bottomY, topY)) {
-	    		return "left";
-	 		}
-	    case "right":
-	    	if(checkRight(nextX, nextY, leftX, bottomY, topY)) {
-	    		return "right";
-	 		}
-	    }   
-	    
-	    if(checkUp(nextX, nextY, rightX, leftX, topY)) {
-	    	return "up";
- 		}
-	    if(checkDown(nextX, nextY, rightX, leftX, topY)) {
-	    	return "down";
- 		}
-	    if(checkLeft(nextX, nextY, leftX, bottomY, topY)) {
-    		return "left";
- 		}
-	    if(checkRight(nextX, nextY, leftX, bottomY, topY)) {
-    		return "right";
- 		}
+		int leftX = x + solidArea.x;
+		int rightX = leftX + solidArea.width;
+		int topY = y + solidArea.y;
+		int bottomY = topY + solidArea.height;  // Fixed this line
+	
+		if (pf.pathNodes.isEmpty()) {
+			return "";
+		}
+		
+		int nextX = pf.pathNodes.get(pf.pathNodes.size() - 1).row * gp.TILE_SIZE;
+		int nextY = pf.pathNodes.get(pf.pathNodes.size() - 1).col * gp.TILE_SIZE;
+	   
+		// Check the direction based on the current path node
+		switch(direction) {
+			case "up":
+				if (checkUp(nextX, nextY, rightX, leftX, topY)) {
+					return "up";
+				}
+				break;  
+			case "down":
+				if (checkDown(nextX, nextY, rightX, leftX, topY)) {
+					return "down";
+				}
+				break;  
+			case "left":
+				if (checkLeft(nextX, nextY, leftX, bottomY, topY)) {
+					return "left";
+				}
+				break;  
+			case "right":
+				if (checkRight(nextX, nextY, leftX, bottomY, topY)) {
+					return "right";
+				}
+				break;  
+		}
+	
+		// Default direction checks if the switch statement fails
+		if (checkUp(nextX, nextY, rightX, leftX, topY)) {
+			return "up";
+		}
+		if (checkDown(nextX, nextY, rightX, leftX, topY)) {
+			return "down";
+		}
+		if (checkLeft(nextX, nextY, leftX, bottomY, topY)) {
+			return "left";
+		}
+		if (checkRight(nextX, nextY, leftX, bottomY, topY)) {
+			return "right";
+		}
+		
 		return direction;
 	}
 	

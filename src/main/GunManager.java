@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import entity.Bullet;
 import entity.Zombie;
@@ -41,12 +42,15 @@ public class GunManager {
 	
 	private void checkBulletCollision() {
 
+		// Array list holding all live zombies...
 		zombies = gp.zombieMng.zombies;
+
 		for(Bullet bullet: bullets) {
 			for(Zombie zombie: zombies) {
+
 				if(gp.cChecker.checkEntityCollision(bullet, zombie)) {
-					zombie.damage();
-					bullet.destroyBullet = true;
+					zombie.damage();	// Apply damage to zombie
+					bullet.destroyBullet = true;	// Destroy bullet after it has hit a zombie
 					break;
 				}
 			}
@@ -58,19 +62,27 @@ public class GunManager {
 		if(gp.keyH.shoot) {
 			shoot(gp.player.direction);
 		}
+
+		if(!bullets.isEmpty()) {
+
+			checkBulletCollision();
 		
-		checkBulletCollision();
-		bulletReloadCount ++;
-		
-		for(Bullet bullet: bullets) {
-			if(bullet.destroyBullet) {
-				bullets.remove(bullet);
-				break;
-			}
-			else {
-				bullet.update();
+			// Using Iterator to safely remove bullets during iteration
+			// Without iterator I would need to break out of loop after each discover of a bullet to remove (un-efficient for many checks..)
+			Iterator<Bullet> iterator = bullets.iterator();
+
+			while(iterator.hasNext()) {
+				Bullet bullet = iterator.next();
+	
+				if (bullet.destroyBullet) {
+					iterator.remove();  // Safely remove bullet from the list
+				} else {
+					bullet.update();  // Update bullet if not marked for destruction
+				}
 			}
 		}
+		// Update bullet reload count no matter what...
+		bulletReloadCount ++;
 	}
 
 	public void drawBullets(Graphics2D g2) {

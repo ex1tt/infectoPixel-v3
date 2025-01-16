@@ -11,6 +11,7 @@ public class UIManager {
 	Panel gp;
 	Graphics2D g2;
 	Font gameFont;
+	private final Color FONT_COLOR = Color.black;
 	
 	private int x;
 	private int y;
@@ -22,6 +23,7 @@ public class UIManager {
 		this.gp = gp;
 		
 		gameFont = new Font("Calibri", Font.BOLD, 35);
+
 		
 	}
 	
@@ -32,7 +34,7 @@ public class UIManager {
 		// HEALTH
 		
 		g2.setFont(gameFont);
-		g2.setColor(Color.black);
+		g2.setColor(FONT_COLOR);
 		text = "Health: " + gp.player.health;
 		
 		x = 30;

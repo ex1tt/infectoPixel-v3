@@ -7,6 +7,7 @@ public class KeyHandler implements KeyListener {
 	
 	Panel gp;
 	
+	//  5 keys we currently handle
 	public boolean up, down, left, right, shoot;
 	
 	KeyHandler(Panel gp) {

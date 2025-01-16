@@ -35,7 +35,7 @@ public class LevelManager {
 		
 		mapTiles = new int[gp.WORLD_ROW][gp.WORLD_COL];
 		
-		mapTiles = readMapFileToArray("res/map.txt", mapTiles);
+		mapTiles = readMapFileToMatrix("res/map.txt", mapTiles);
 
 		setStaticObstacles();		
 	}
@@ -50,7 +50,7 @@ public class LevelManager {
 		brick = uTool.loadImage("res/levelTiles/brick.png",  gp.TILE_SIZE);
 	}
 	
-	private int[][] readMapFileToArray(String filePath, int[][] tiles) {
+	private int[][] readMapFileToMatrix(String filePath, int[][] tiles) {
 		
 		int row = gp.WORLD_ROW;
 		int col = gp.WORLD_COL;
@@ -80,6 +80,7 @@ public class LevelManager {
 		return null;
 	}
 
+	// For reference, static obstacles currently have an integer value 1
 	private void setStaticObstacles() {
 		
 		staticObstacleCoords = new boolean[gp.WORLD_ROW][gp.WORLD_COL];
@@ -95,8 +96,10 @@ public class LevelManager {
 	}
 	
 	public void draw(Graphics2D g2) {
-	    for (int i = 0; i < gp.WORLD_ROW; i++) {
-	        for (int z = 0; z < gp.WORLD_COL; z++) {
+
+	    for (int i=0; i < gp.WORLD_ROW; i++) {
+	        for (int z=0; z < gp.WORLD_COL; z++) {
+
 	            int worldX = i * gp.TILE_SIZE;
 	            int worldY = z * gp.TILE_SIZE;
 	            int screenX = worldX - gp.player.worldX + gp.player.screenX;

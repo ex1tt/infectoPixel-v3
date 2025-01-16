@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 
 import main.Panel;
@@ -17,9 +16,8 @@ public class Entity {
 	public int width;
 	public int height;
 	public double speed;
-	public String direction = "up";
+	public String direction = "up";	// Default direction for entity
 	public Rectangle solidArea;
-	public Color color;
 	public boolean collision = false;
 	
 	Entity(Panel gp) {
