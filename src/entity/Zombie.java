@@ -56,7 +56,7 @@ public class Zombie extends Entity {
 		
 		random = new Random();
 		
-		speed = random.nextDouble(2.5, 3);
+		speed = random.nextDouble(2.5, 3.2);
 		health = 3;		
 		direction = "";
 		

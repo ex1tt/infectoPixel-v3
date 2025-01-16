@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Random;
 
 import entity.Zombie;
 
@@ -9,21 +10,18 @@ public class ZombieManager {
 	
 	Panel gp;
 	public ArrayList<Zombie> zombies;
+	public int currentWave = 1;
+	private Random random;
 	
 	// Needs to be changed to incorporate waves
 	public ZombieManager(Panel gp) {
 		
 		this.gp = gp;	
+		random = new Random();
+		zombies = new ArrayList<>();
 		
 		// This keeps a track of current live zombies...
-		zombies = new ArrayList<>();	
-		
-		zombies.add(new Zombie(gp, 4*gp.TILE_SIZE, 6*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
-		zombies.add(new Zombie(gp, 12*gp.TILE_SIZE, 10*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
-		zombies.add(new Zombie(gp, 6*gp.TILE_SIZE, 2*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
-		zombies.add(new Zombie(gp, 18*gp.TILE_SIZE, 8*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
-		zombies.add(new Zombie(gp, 28*gp.TILE_SIZE, 1*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
-		zombies.add(new Zombie(gp, 33*gp.TILE_SIZE, 9*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
+		startNewWave(currentWave);
 	}
 	
 	private void checkForDeadZombie() {
@@ -49,6 +47,26 @@ public class ZombieManager {
 			zombie.collision = playerCollision;
 		}
 	}
+
+	public void checkNewWave() {
+
+		// If no zombies left -> start new wave
+		if(zombies.isEmpty()) {
+
+			currentWave ++;
+			startNewWave(currentWave);
+		}
+	}
+
+	public void startNewWave(int wave) {
+
+		gp.player.reset_stats(wave);
+
+		// Add x amount of zombies
+		for(int i=0; i<(wave*5); i++) {
+			zombies.add(new Zombie(gp, 	random.nextInt(0, gp.WORLD_ROW) *gp.TILE_SIZE, random.nextInt(0, gp.WORLD_COL)*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
+		}
+	}
 	
 	private boolean collidePlayer(Zombie zombie) {
 		return gp.cChecker.checkEntityCollision(zombie, gp.player);
@@ -58,6 +76,7 @@ public class ZombieManager {
 		
 		checkCollision();
 		checkForDeadZombie();
+		checkNewWave();
 		
 		for(Zombie zombie : zombies) {
 			zombie.update();

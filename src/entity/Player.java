@@ -51,7 +51,7 @@ public class Player extends Entity {
 		
 		width = gp.TILE_SIZE;
 		height = gp.TILE_SIZE;
-		
+
 		speed = 4;		
 		solidArea = new Rectangle(20,20, width/2-10, height/2-10);		
 		health = MAX_HEALTH;		
@@ -77,6 +77,15 @@ public class Player extends Entity {
 		left3 = uTool.loadImage("res/playerSprites/player_left_right.png",  gp.TILE_SIZE);
 		right3 = uTool.loadImage("res/playerSprites/player_right_right.png",  gp.TILE_SIZE);
 
+	}
+
+	// Method to reset player stats in the event of a new wave.
+	public void reset_stats(int wave) {
+
+		health = MAX_HEALTH;	
+		worldX = gp.TILE_SIZE * 10;
+		worldY = gp.TILE_SIZE * 10;
+		speed = speed + (0.1*wave);
 	}
 	
 	// Method to damage player health

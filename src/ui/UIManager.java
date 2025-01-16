@@ -16,14 +16,13 @@ public class UIManager {
 	private int x;
 	private int y;
 	
-	private String text;
+	private String health_text;
+	private String wave_text;
 	
 	public UIManager(Panel gp) {
 		
 		this.gp = gp;
-		
 		gameFont = new Font("Calibri", Font.BOLD, 35);
-
 		
 	}
 	
@@ -35,12 +34,15 @@ public class UIManager {
 		
 		g2.setFont(gameFont);
 		g2.setColor(FONT_COLOR);
-		text = "Health: " + gp.player.health;
+		health_text = "Health: " + gp.player.health;
+		wave_text = "Wave: " + gp.zombieMng.currentWave;
+
 		
 		x = 30;
 		y = 50;
 		
-		g2.drawString(text, x, y);
+		g2.drawString(health_text, x, y);
+		g2.drawString(wave_text, x, y+30);
 		
 	}
 
