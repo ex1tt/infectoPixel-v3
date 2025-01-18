@@ -53,7 +53,8 @@ public class Player extends Entity {
 		height = gp.TILE_SIZE;
 
 		speed = 4;		
-		solidArea = new Rectangle(20,20, width/2-10, height/2-10);		
+		// Defining player solid area
+		solidArea = new Rectangle(gp.TILE_SIZE/4,gp.TILE_SIZE/4, width/2, (int) Math.round(height/2));		
 		health = MAX_HEALTH;		
 		
 	}
@@ -100,7 +101,7 @@ public class Player extends Entity {
 	public void update() {
 		
 		// Check for collision
-		collision = checkCollision();
+		collision = (!isInScreenBounds()) || checkSolidCollision();
 
 		// If any of these keys were pressed update sprite and move player
 		if(gp.keyH.up || gp.keyH.down || gp.keyH.left || gp.keyH.right) {
@@ -145,16 +146,16 @@ public class Player extends Entity {
 		if(!collision) {
 
 			if(gp.keyH.up) {	
-				if (!collision) worldY -= speed;
+				worldY -= speed;
 			}
 			if(gp.keyH.down) {
-				if (!collision) worldY += speed;
+				worldY += speed;
 			}
 			if(gp.keyH.left) {
-				if (!collision) worldX -= speed;
+				worldX -= speed;
 			}
 			if(gp.keyH.right) {
-				if (!collision) worldX += speed;
+				worldX += speed;
 			}
 		}
 	}
@@ -172,8 +173,8 @@ public class Player extends Entity {
 		}
 	}
 	
-	private boolean checkCollision() {		
-		return (!isInScreenBounds() || gp.cChecker.checkSolidCollision(this));
+	private Boolean checkSolidCollision() {		
+		return (gp.cChecker.checkSolidCollision(this));
 	}
 	
 	private boolean isInScreenBounds() {
@@ -182,5 +183,6 @@ public class Player extends Entity {
 	
 	public void draw(Graphics2D g2) {	
 		g2.drawImage(current, screenX, screenY, null);
+		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 }

@@ -14,36 +14,19 @@ public class CollisionChecker {
 	}
 
 	public boolean checkEntityCollision(Entity entity1, Entity entity2) {
-		
-	    Rectangle solidArea1 = entity1.solidArea;	// Entity Colliding
-	    Rectangle solidArea2 = entity2.solidArea;	// Entity Being Collided
+		// Clone solid areas to avoid modifying original ones
+		Rectangle solidArea1 = new Rectangle(entity1.solidArea);
+		Rectangle solidArea2 = new Rectangle(entity2.solidArea);
+	
+		// Offset solid areas by world positions
+		solidArea1.x += entity1.worldX;
+		solidArea1.y += entity1.worldY;
+	
+		solidArea2.x += entity2.worldX;
+		solidArea2.y += entity2.worldY;
 
-	    int entity1LeftX = entity1.worldX + solidArea1.x;
-	    int entity1RightX = entity1LeftX + solidArea1.width;
-	    int entity1TopY = entity1.worldY + solidArea1.y;
-	    int entity1BottomY = entity1TopY + solidArea1.height;
-
-	    int entity2LeftX = entity2.worldX + solidArea2.x;
-	    int entity2RightX = entity2LeftX + solidArea2.width;
-	    int entity2TopY = entity2.worldY + solidArea2.y;
-	    int entity2BottomY = entity2TopY + solidArea2.height;
-
-	    switch(entity1.direction) {
-	        case "up":
-	            return (entity1LeftX <= entity2RightX && entity1RightX >= entity2LeftX) &&
-	                   (entity1TopY <= entity2BottomY && entity1TopY >= entity2TopY);
-	        case "down":
-	            return (entity1LeftX <= entity2RightX && entity1RightX >= entity2LeftX) &&
-	                   (entity1BottomY >= entity2TopY && entity1BottomY <= entity2BottomY);
-	        case "left":
-	            return (entity1TopY <= entity2BottomY && entity1BottomY >= entity2TopY) &&
-	                   (entity1LeftX <= entity2RightX && entity1LeftX >= entity2LeftX);
-	        case "right":
-	            return (entity1TopY <= entity2BottomY && entity1BottomY >= entity2TopY) &&
-	                   (entity1RightX >= entity2LeftX && entity1RightX <= entity2RightX);
-	    }
-	    
-	    return false;
+		// Check for collision using intersects
+		return solidArea1.intersects(solidArea2);
 	}
 	
 	public boolean checkScreenCollision(Entity entity) {
@@ -64,9 +47,10 @@ public class CollisionChecker {
     
 	}
 	
-	public boolean checkSolidCollision(Entity entity) {
+	// Review this method?
+	public Boolean checkSolidCollision(Entity entity) {
 
-		int leftX = entity.worldX + entity.solidArea.x;
+		int leftX = entity.worldX + entity.solidArea.x; 
 	    int rightX = leftX + entity.solidArea.width;
 	    int topY = entity.worldY + entity.solidArea.y;
 	    int bottomY = topY + entity.solidArea.height;
@@ -79,29 +63,15 @@ public class CollisionChecker {
 		boolean[][] solidCoords = gp.levelMng.staticObstacleCoords;
 		
 		switch(entity.direction) {
-		case "up":			
-			if(solidCoords[playerLeftRow][playerTopCol]||solidCoords[playerRightRow][playerTopCol]) {
-				return true;
-			}
-			break;
+		case "up":		
+			return (solidCoords[playerLeftRow][playerTopCol]||solidCoords[playerRightRow][playerTopCol]);
 		case "down":
-			if(solidCoords[playerLeftRow][playerBottomCol]||solidCoords[playerRightRow][playerBottomCol]) {
-				return true;
-			}
-			break;
+			return (solidCoords[playerLeftRow][playerBottomCol]||solidCoords[playerRightRow][playerBottomCol]);
 		case "left":
-			if(solidCoords[playerLeftRow][playerTopCol]||solidCoords[playerLeftRow][playerBottomCol]) {
-				return true;
-			}
-			break;
+			return (solidCoords[playerLeftRow][playerTopCol]||solidCoords[playerLeftRow][playerBottomCol]);
 		case "right":
-			if(solidCoords[playerRightRow][playerTopCol]||solidCoords[playerRightRow][playerBottomCol]) {
-				return true;
-			}
-			break;
+			return (solidCoords[playerRightRow][playerTopCol]||solidCoords[playerRightRow][playerBottomCol]);
 		}
-		
 		return false;		
 		}
 	}	
-

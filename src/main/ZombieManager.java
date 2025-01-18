@@ -40,9 +40,7 @@ public class ZombieManager {
 			boolean playerCollision = collidePlayer(zombie);
 			
 			if(playerCollision) {
-				zombie.collision = true;
 				zombie.attack();
-				continue;
 			}
 			zombie.collision = playerCollision;
 		}
@@ -76,7 +74,7 @@ public class ZombieManager {
 		
 		checkCollision();
 		checkForDeadZombie();
-		checkNewWave();
+		//checkNewWave();
 		
 		for(Zombie zombie : zombies) {
 			zombie.update();

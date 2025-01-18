@@ -52,7 +52,7 @@ public class Zombie extends Entity {
 		width = gp.TILE_SIZE;
 		height = gp.TILE_SIZE;
 		
-		solidArea = new Rectangle(1, 1, gp.TILE_SIZE-20, gp.TILE_SIZE-20);
+		solidArea = new Rectangle(10,10, width-20, height-20);	
 		
 		random = new Random();
 		
@@ -172,6 +172,7 @@ public class Zombie extends Entity {
 		}
 	}
 	
+	// Think this is fixed?
 	private String getDirection(PathFinder pf, int x, int y) {
 		
 		int leftX = x + solidArea.x;
@@ -185,6 +186,9 @@ public class Zombie extends Entity {
 		
 		int nextX = pf.pathNodes.get(pf.pathNodes.size() - 1).row * gp.TILE_SIZE;
 		int nextY = pf.pathNodes.get(pf.pathNodes.size() - 1).col * gp.TILE_SIZE;
+
+		nextX += solidArea.x;
+		nextY +=solidArea.y;
 	   
 		// Check the direction based on the current path node
 		switch(direction) {
@@ -261,6 +265,8 @@ public class Zombie extends Entity {
 			screenY = worldY - gp.player.worldY + gp.player.screenY;
 			
 			g2.drawImage(current, screenX, screenY, null);
+			g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+			
 		}
 	}	
 }

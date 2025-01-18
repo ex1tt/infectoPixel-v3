@@ -42,7 +42,7 @@ public class UIManager {
 		y = 50;
 		
 		g2.drawString(health_text, x, y);
-		g2.drawString(wave_text, x, y+30);
+		g2.drawString(wave_text, x, y+50);
 		
 	}
 
