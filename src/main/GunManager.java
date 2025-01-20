@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.sound.sampled.Clip;
+
 import entity.Bullet;
 import entity.Zombie;
 
@@ -16,6 +18,8 @@ public class GunManager {
 	
 	private final int HANDGUN_MAGAZINE = 6;
 	private final int HANDGUN_RELOAD_TIME = 45;
+
+	private Clip gunshotSound;
 
 	private int bulletReloadCount;
 	
@@ -33,6 +37,10 @@ public class GunManager {
 		if(canShoot()) {
 			bullets.add(new Bullet(gp, direction));
 			bulletReloadCount = 0;
+
+			// Play handgun sound effect -> creating new instance each time is needed
+			gunshotSound = gp.soundMng.setSoundFile("res/soundFiles/handGun.wav");
+			gp.soundMng.playSound(gunshotSound);
 		}
 	}
 	

@@ -52,7 +52,7 @@ public class Player extends Entity {
 		width = gp.TILE_SIZE;
 		height = gp.TILE_SIZE;
 
-		speed = 4;		
+		speed = 5;		
 		// Defining player solid area
 		solidArea = new Rectangle(gp.TILE_SIZE/4,gp.TILE_SIZE/4, width/2, (int) Math.round(height/2));		
 		health = MAX_HEALTH;		
@@ -183,6 +183,6 @@ public class Player extends Entity {
 	
 	public void draw(Graphics2D g2) {	
 		g2.drawImage(current, screenX, screenY, null);
-		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+		//g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 }

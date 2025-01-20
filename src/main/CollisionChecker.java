@@ -61,17 +61,36 @@ public class CollisionChecker {
 		int playerBottomCol = bottomY/gp.TILE_SIZE;
 		
 		boolean[][] solidCoords = gp.levelMng.staticObstacleCoords;
+
+		boolean collision = false;
 		
-		switch(entity.direction) {
-		case "up":		
-			return (solidCoords[playerLeftRow][playerTopCol]||solidCoords[playerRightRow][playerTopCol]);
-		case "down":
-			return (solidCoords[playerLeftRow][playerBottomCol]||solidCoords[playerRightRow][playerBottomCol]);
-		case "left":
-			return (solidCoords[playerLeftRow][playerTopCol]||solidCoords[playerLeftRow][playerBottomCol]);
-		case "right":
-			return (solidCoords[playerRightRow][playerTopCol]||solidCoords[playerRightRow][playerBottomCol]);
+		switch (entity.direction) {
+			case "up":
+				if (solidCoords[playerLeftRow][playerTopCol] || solidCoords[playerRightRow][playerTopCol]) {
+					entity.worldY += entity.speed; // Push player down slightly to allow sliding
+					collision = true;
+				}
+				break;
+			case "down":
+				if (solidCoords[playerLeftRow][playerBottomCol] || solidCoords[playerRightRow][playerBottomCol]) {
+					entity.worldY -= entity.speed; // Push player up slightly
+					collision = true;
+				}
+				break;
+			case "left":
+				if (solidCoords[playerLeftRow][playerTopCol] || solidCoords[playerLeftRow][playerBottomCol]) {
+					entity.worldX += entity.speed; // Push player right slightly
+					collision = true;
+				}
+				break;
+			case "right":
+				if (solidCoords[playerRightRow][playerTopCol] || solidCoords[playerRightRow][playerBottomCol]) {
+					entity.worldX -= entity.speed; // Push player left slightly
+					collision = true;
+				}
+				break;
 		}
-		return false;		
-		}
+	
+		return collision;
 	}	
+}

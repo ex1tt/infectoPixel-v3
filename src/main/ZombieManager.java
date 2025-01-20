@@ -13,15 +13,13 @@ public class ZombieManager {
 	public int currentWave = 1;
 	private Random random;
 	
-	// Needs to be changed to incorporate waves
 	public ZombieManager(Panel gp) {
 		
 		this.gp = gp;	
 		random = new Random();
 		zombies = new ArrayList<>();
-		
-		// This keeps a track of current live zombies...
-		startNewWave(currentWave);
+
+		//startNewWave(currentWave);
 	}
 	
 	private void checkForDeadZombie() {

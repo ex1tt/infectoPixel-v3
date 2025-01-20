@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import entity.Player;
 import level.LevelManager;
@@ -18,6 +19,7 @@ public class Panel extends JPanel implements Runnable {
 	public UIManager ui;
 	public GunManager gunMng;
 	public ZombieManager zombieMng;
+	public SoundManager soundMng;
 	public CollisionChecker cChecker;
 	public LevelManager levelMng;
 	public Player player;
@@ -38,11 +40,13 @@ public class Panel extends JPanel implements Runnable {
 	public final int WORLD_WIDTH = WORLD_ROW * TILE_SIZE;
 	public final int WORLD_HEIGHT = WORLD_COL * TILE_SIZE;
 	
-	
 	private final int FPS = 60;
+
+	public Clip backgroundMusic;
 	
 	Panel() {
 
+		soundMng = new SoundManager(this);
 		levelMng = new LevelManager(this);
 		player = new Player(this);
 		keyH = new KeyHandler(this);
@@ -58,6 +62,10 @@ public class Panel extends JPanel implements Runnable {
 		
 		gameThread = new Thread(this);
 		gameThread.start();	
+
+		backgroundMusic = soundMng.setSoundFile("res/soundFiles/bgMusic.wav");
+
+		soundMng.playBackground(backgroundMusic);
 	}
 
 	@Override
@@ -97,8 +105,8 @@ public class Panel extends JPanel implements Runnable {
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		long drawStart = 0;
-		drawStart = System.nanoTime();
+		//long drawStart = 0;
+		//drawStart = System.nanoTime();
 		
 		levelMng.draw(g2);
 		gunMng.drawBullets(g2);		
@@ -106,10 +114,10 @@ public class Panel extends JPanel implements Runnable {
 		zombieMng.draw(g2);		
 		ui.draw(g2);
 		
-		long drawEnd = System.nanoTime();
-		long passed = drawEnd - drawStart;
+		//long drawEnd = System.nanoTime();
+		//long passed = drawEnd - drawStart;
 		
-		System.out.println("DRAWTIME: " + passed);
+		//System.out.println("DRAWTIME: " + passed);
 		
 		g2.dispose();	
 	}

@@ -51,8 +51,11 @@ public class KeyHandler implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			shoot = true;
 			break;
+		case KeyEvent.VK_M:
+			// Toggles sound on and off
+			gp.soundMng.toggleSound(gp.backgroundMusic);
+			break;
 		}
-		
 	}
 
 	@Override
