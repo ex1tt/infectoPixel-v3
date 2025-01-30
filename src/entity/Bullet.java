@@ -42,12 +42,10 @@ public class Bullet extends Entity {
 	
 	public void setImage() {
 		
-		uTool = new UtilityTool();
-		
-		upImage = uTool.loadImage("res/bulletSprites/bullet_up.png",  gp.TILE_SIZE);	
-		downImage = uTool.loadImage("res/bulletSprites/bullet_down.png",  gp.TILE_SIZE);	
-		leftImage = uTool.loadImage("res/bulletSprites/bullet_left.png",  gp.TILE_SIZE);	
-		rightImage = uTool.loadImage("res/bulletSprites/bullet_right.png",  gp.TILE_SIZE);
+		upImage = UtilityTool.loadImage("res/bulletSprites/bullet_up.png",  gp.TILE_SIZE);	
+		downImage = UtilityTool.loadImage("res/bulletSprites/bullet_down.png",  gp.TILE_SIZE);	
+		leftImage = UtilityTool.loadImage("res/bulletSprites/bullet_left.png",  gp.TILE_SIZE);	
+		rightImage = UtilityTool.loadImage("res/bulletSprites/bullet_right.png",  gp.TILE_SIZE);
 		
 	}
 	

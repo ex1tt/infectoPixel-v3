@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public class UtilityTool {
 	
-	public BufferedImage scaleImage(BufferedImage original, int width, int height) {
+	public static BufferedImage scaleImage(BufferedImage original, int width, int height) {
 		
 		BufferedImage scaledImage = new BufferedImage(width, height, original.getType());
 		Graphics2D g2 = scaledImage.createGraphics();
@@ -20,7 +20,7 @@ public class UtilityTool {
 		
 	}
 	
-	public BufferedImage loadImage(String imagePath, int tileSize) {
+	public static BufferedImage loadImage(String imagePath, int tileSize) {
 
 		BufferedImage image = null;
 

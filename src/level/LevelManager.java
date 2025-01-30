@@ -1,7 +1,6 @@
 package level;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,13 +14,21 @@ public class LevelManager {
 	Panel gp;
 	
 	UtilityTool uTool;
-	public BufferedImage current;
-	private BufferedImage ground;
-	private BufferedImage grass;
-	private BufferedImage wood;
-	private BufferedImage brick;
+
+	private Tile path_1;
+	private Tile path_2;
+	private Tile path_3;
+
+	private Tile grass_1;
+	private Tile grass_2;
+	private Tile grass_3;
+
+	private Tile wood;
+	private Tile brick;
 	
 	public boolean[][] staticObstacleCoords;
+
+	Tile[] tileList;
 	
 	private int[][] mapTiles;
 	
@@ -29,25 +36,40 @@ public class LevelManager {
 	
 		this.gp = gp;
 		
-		setImage();
-		
-		current = ground;
+		tileList = new Tile[10];
+
+		setTiles();
 		
 		mapTiles = new int[gp.WORLD_ROW][gp.WORLD_COL];
 		
-		mapTiles = readMapFileToMatrix("res/map.txt", mapTiles);
+		mapTiles = readMapFileToMatrix("res/map_2.txt", mapTiles);
 
 		setStaticObstacles();		
 	}
 	
-	public void setImage() {
+	public void setTiles() {
 		
-		uTool = new UtilityTool();
-		
-		ground = uTool.loadImage("res/levelTiles/ground.png",  gp.TILE_SIZE);
-		grass = uTool.loadImage("res/levelTiles/grass.png",  gp.TILE_SIZE);
-		wood = uTool.loadImage("res/levelTiles/wood.png",  gp.TILE_SIZE);
-		brick = uTool.loadImage("res/levelTiles/brick.png",  gp.TILE_SIZE);
+		path_1 = new Tile("path_1.png", gp.TILE_SIZE);
+		path_2 = new Tile("path_2.png", gp.TILE_SIZE);
+		path_3= new Tile("path_3.png", gp.TILE_SIZE);
+
+		grass_1 = new Tile("grass_1.png", gp.TILE_SIZE);
+		grass_2 = new Tile("grass_2.png", gp.TILE_SIZE);
+		grass_3 = new Tile("grass_3.png", gp.TILE_SIZE);
+
+		wood = new Tile("wood.png", gp.TILE_SIZE);
+		brick = new Tile("brick.png", gp.TILE_SIZE);
+
+		tileList[0] = brick;
+		tileList[1] = path_2;
+		tileList[2] = grass_1;
+		tileList[3] = grass_2;
+		tileList[4] = grass_3;
+		tileList[5] = grass_3;
+		tileList[6] = path_1;
+		tileList[7] = path_2;
+		tileList[8] = path_3;
+		tileList[9] = wood;
 	}
 	
 	private int[][] readMapFileToMatrix(String filePath, int[][] tiles) {
@@ -88,7 +110,7 @@ public class LevelManager {
 		for(int i=0; i<mapTiles.length; i++) {			
 			for(int z=0; z<mapTiles[i].length; z++) {
 				
-				if(mapTiles[i][z] == 1) {
+				if(mapTiles[i][z] == 0) {
 					staticObstacleCoords[i][z] = true;
 				}				
 			}		
@@ -106,20 +128,32 @@ public class LevelManager {
 	            int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
 	            if (isTileVisibleOnScreen(worldX, worldY)) {
-	                boolean isObstacle = staticObstacleCoords[i][z];
 
-	                if (isObstacle) {
-	                	g2.drawImage(brick, screenX, screenY, null);
+					g2.drawImage(tileList[mapTiles[i][z]].image, screenX, screenY, null);
+
+					/**
+	                if (mapTiles[i][z] == 4) {
+	                	g2.drawImage(wood.image, screenX, screenY, null);
 	                }
 	                else if(mapTiles[i][z] == 2){
-	                	g2.drawImage(current, screenX, screenY, null);
+	                	g2.drawImage(path.image, screenX, screenY, null);
 	                }
-	                else if(mapTiles[i][z] == 4){
-	                	g2.drawImage(wood, screenX, screenY, null);
+	                else if(mapTiles[i][z] == 1){
+	                	g2.drawImage(brick.image, screenX, screenY, null);
+	                }
+					else if(mapTiles[i][z] == 1){
+	                	g2.drawImage(brick.image, screenX, screenY, null);
+	                }
+					else if(mapTiles[i][z] == 1){
+	                	g2.drawImage(brick.image, screenX, screenY, null);
+	                }
+					else if(mapTiles[i][z] == 1){
+	                	g2.drawImage(brick.image, screenX, screenY, null);
 	                }
 	                else {
-	                	g2.drawImage(grass, screenX, screenY, null);
+	                	g2.drawImage(grass.image, screenX, screenY, null);
 	                }
+						 */
 	            }
 	        }
 	    }

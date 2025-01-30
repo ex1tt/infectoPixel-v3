@@ -70,20 +70,20 @@ public class Zombie extends Entity {
 		
 		uTool = new UtilityTool();
 		
-		front = uTool.loadImage("res/zombieSprites/zombie_grey_front_static.png",  gp.TILE_SIZE);
-		behind = uTool.loadImage("res/zombieSprites/zombie_grey_behind_static.png",  gp.TILE_SIZE);
-		left = uTool.loadImage("res/zombieSprites/zombie_grey_left_static.png",  gp.TILE_SIZE);
-		right = uTool.loadImage("res/zombieSprites/zombie_grey_right_static.png",  gp.TILE_SIZE);
+		front = UtilityTool.loadImage("res/zombieSprites/zombie_grey_front_static.png",  gp.TILE_SIZE);
+		behind = UtilityTool.loadImage("res/zombieSprites/zombie_grey_behind_static.png",  gp.TILE_SIZE);
+		left = UtilityTool.loadImage("res/zombieSprites/zombie_grey_left_static.png",  gp.TILE_SIZE);
+		right = UtilityTool.loadImage("res/zombieSprites/zombie_grey_right_static.png",  gp.TILE_SIZE);
 		
-		front2 = uTool.loadImage("res/zombieSprites/zombie_grey_front_left.png",  gp.TILE_SIZE);
-		behind2 = uTool.loadImage("res/zombieSprites/zombie_grey_behind_left.png",  gp.TILE_SIZE);
-		left2 = uTool.loadImage("res/zombieSprites/zombie_grey_left_left.png",  gp.TILE_SIZE);
-		right2 = uTool.loadImage("res/zombieSprites/zombie_grey_right_left.png",  gp.TILE_SIZE);
+		front2 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_front_left.png",  gp.TILE_SIZE);
+		behind2 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_behind_left.png",  gp.TILE_SIZE);
+		left2 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_left_left.png",  gp.TILE_SIZE);
+		right2 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_right_left.png",  gp.TILE_SIZE);
 		
-		front3 = uTool.loadImage("res/zombieSprites/zombie_grey_front_right.png",  gp.TILE_SIZE);
-		behind3 = uTool.loadImage("res/zombieSprites/zombie_grey_behind_right.png",  gp.TILE_SIZE);
-		left3 = uTool.loadImage("res/zombieSprites/zombie_grey_left_right.png",  gp.TILE_SIZE);
-		right3 = uTool.loadImage("res/zombieSprites/zombie_grey_right_right.png",  gp.TILE_SIZE);
+		front3 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_front_right.png",  gp.TILE_SIZE);
+		behind3 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_behind_right.png",  gp.TILE_SIZE);
+		left3 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_left_right.png",  gp.TILE_SIZE);
+		right3 = UtilityTool.loadImage("res/zombieSprites/zombie_grey_right_right.png",  gp.TILE_SIZE);
 
 	}
 	

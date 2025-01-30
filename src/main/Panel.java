@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
+
 import entity.Player;
 import level.LevelManager;
 import ui.UIManager;
@@ -23,6 +24,7 @@ public class Panel extends JPanel implements Runnable {
 	public CollisionChecker cChecker;
 	public LevelManager levelMng;
 	public Player player;
+	public BoostManager boostMng;
 	
 	private final int ORIGINAL_TILE_SIZE = 32;
 	private final int SCALE = 3;
@@ -34,7 +36,7 @@ public class Panel extends JPanel implements Runnable {
 	public final int SCREEN_WIDTH = SCREEN_ROW * TILE_SIZE;
 	public final int SCREEN_HEIGHT = SCREEN_COL* TILE_SIZE;
 	
-	public final int WORLD_ROW = 40;
+	public final int WORLD_ROW = 49;
 	public final int WORLD_COL = 24;
 	
 	public final int WORLD_WIDTH = WORLD_ROW * TILE_SIZE;
@@ -49,6 +51,7 @@ public class Panel extends JPanel implements Runnable {
 		soundMng = new SoundManager(this);
 		levelMng = new LevelManager(this);
 		player = new Player(this);
+		boostMng = new BoostManager(this);
 		keyH = new KeyHandler(this);
 		gunMng = new GunManager(this);
 		zombieMng = new ZombieManager(this);
@@ -95,9 +98,10 @@ public class Panel extends JPanel implements Runnable {
 	private void update() {
 
 		player.update();
+		boostMng.update();
 		zombieMng.update();
 		gunMng.bulletUpdate();		
-	}
+	} 
 
 	public void paintComponent(Graphics g) {
 		
@@ -109,6 +113,7 @@ public class Panel extends JPanel implements Runnable {
 		//drawStart = System.nanoTime();
 		
 		levelMng.draw(g2);
+		boostMng.draw(g2);
 		gunMng.drawBullets(g2);		
 		player.draw(g2);		
 		zombieMng.draw(g2);		

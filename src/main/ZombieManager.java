@@ -19,7 +19,7 @@ public class ZombieManager {
 		random = new Random();
 		zombies = new ArrayList<>();
 
-		//startNewWave(currentWave);
+		startNewWave(currentWave);
 	}
 	
 	private void checkForDeadZombie() {
@@ -58,8 +58,22 @@ public class ZombieManager {
 
 		gp.player.reset_stats(wave);
 
+		int randomSpawnRow;
+		int randomSpawnCol;
+		boolean[][] staticCoords = gp.levelMng.staticObstacleCoords;
+
 		// Add x amount of zombies
 		for(int i=0; i<(wave*5); i++) {
+
+			randomSpawnRow = random.nextInt(0, gp.WORLD_ROW);
+			randomSpawnCol = random.nextInt(0, gp.WORLD_COL);
+
+			// Ensure no zombie spawns in a wall
+			while(staticCoords[randomSpawnRow][randomSpawnCol]) {
+				randomSpawnRow = random.nextInt(0, gp.WORLD_ROW);
+				randomSpawnCol = random.nextInt(0, gp.WORLD_COL);
+			}
+			
 			zombies.add(new Zombie(gp, 	random.nextInt(0, gp.WORLD_ROW) *gp.TILE_SIZE, random.nextInt(0, gp.WORLD_COL)*gp.TILE_SIZE, gp.levelMng.staticObstacleCoords));
 		}
 	}
@@ -72,7 +86,7 @@ public class ZombieManager {
 		
 		checkCollision();
 		checkForDeadZombie();
-		//checkNewWave();
+		checkNewWave();
 		
 		for(Zombie zombie : zombies) {
 			zombie.update();
