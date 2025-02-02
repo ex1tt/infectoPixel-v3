@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import entity.Boost;
 import entity.SpeedBoost;
+import entity.HealthBoost;
 
 public class BoostManager {
 
@@ -26,6 +27,7 @@ public class BoostManager {
 
         // Add a speed boost
         unactivatedBoosts.add(new SpeedBoost(gp, 2, 8));
+        unactivatedBoosts.add(new HealthBoost(gp, 7, 8));
     }
 
     // This checks for player collision of boosts currently on map

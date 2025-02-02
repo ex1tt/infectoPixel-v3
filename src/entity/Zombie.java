@@ -89,6 +89,8 @@ public class Zombie extends Entity {
 	
 	public void damage() {
 		
+		// Acts as a shot animation currently
+		// Proper animation needed
 		current = null;
 		
 		health -=1;
