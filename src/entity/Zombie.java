@@ -163,7 +163,7 @@ public class Zombie extends Entity {
 		}
 		
 		spriteCounter +=1;
-		if(spriteCounter > 20 * speed) {
+		if(spriteCounter > 10 * speed) {
 			if(spriteNum == 1) {
 				spriteNum =2;
 			}
@@ -190,7 +190,7 @@ public class Zombie extends Entity {
 		int nextY = pf.pathNodes.get(pf.pathNodes.size() - 1).col * gp.TILE_SIZE;
 
 		nextX += solidArea.x;
-		nextY +=solidArea.y;
+		nextY += solidArea.y;
 	   
 		// Check the direction based on the current path node
 		switch(direction) {

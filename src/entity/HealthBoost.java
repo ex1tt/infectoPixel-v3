@@ -17,18 +17,16 @@ public class HealthBoost extends Boost {
 		width = gp.TILE_SIZE;
 		height = gp.TILE_SIZE;
 
-		colided = false;
-		active = false;
         boostColor = Color.red;
 
         solidArea = new Rectangle(gp.TILE_SIZE/4,gp.TILE_SIZE/4, width/2, (int) Math.round(height/2));		
+
+        setImage("res/boostSprites/healthBoost.png");
     }    
 
     @Override
     public void powerUp() {
-
         // Double health
-        gp.player.health *= 2;
-        colided = true;
+        gp.player.health = 10;
     }
 }

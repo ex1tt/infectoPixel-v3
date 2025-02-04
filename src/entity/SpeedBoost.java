@@ -18,24 +18,22 @@ public class SpeedBoost extends Boost {
 		width = gp.TILE_SIZE;
 		height = gp.TILE_SIZE;
 
-		colided = false;
-		active = false;
-		duration = 1000;
+		duration = 500;
 		boostColor = Color.yellow;
 
         solidArea = new Rectangle(gp.TILE_SIZE/4,gp.TILE_SIZE/4, width/2, (int) Math.round(height/2));		
+
+		setImage("res/boostSprites/speedBoost.png");
     }    
 
 	// This is distinct to each boost
 	@Override
 	public void powerUp() {
 		gp.player.speed *=2;
-		active = true;
 	}
 
 	@Override
     public void powerDown() {
         gp.player.speed = 5;
-        colided = true;
     }
 }

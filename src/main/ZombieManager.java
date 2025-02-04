@@ -57,6 +57,7 @@ public class ZombieManager {
 	public void startNewWave(int wave) {
 
 		gp.player.reset_stats(wave);
+		gp.boostMng.generateNewBoosts();
 
 		int randomSpawnRow;
 		int randomSpawnCol;

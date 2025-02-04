@@ -54,6 +54,7 @@ public class KeyHandler implements KeyListener {
 		case KeyEvent.VK_M:
 			// Toggles sound on and off
 			gp.soundMng.toggleSound(gp.backgroundMusic);
+			gp.gunMng.muted = gp.gunMng.muted ? false : true;
 			break;
 		}
 	}

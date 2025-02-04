@@ -16,8 +16,10 @@ public class GunManager {
 	public ArrayList<Bullet> bullets;
 	private ArrayList<Zombie> zombies;
 	
-	private final int HANDGUN_MAGAZINE = 6;
-	private final int HANDGUN_RELOAD_TIME = 45;
+	private final int HANDGUN_MAGAZINE = 20;
+	private final int HANDGUN_RELOAD_TIME = 10;
+
+	public boolean muted = false;
 
 	private Clip gunshotSound;
 
@@ -40,7 +42,10 @@ public class GunManager {
 
 			// Play handgun sound effect -> creating new instance each time is needed
 			gunshotSound = gp.soundMng.setSoundFile("res/soundFiles/handGun.wav");
-			gp.soundMng.playSound(gunshotSound);
+
+			if(!muted) {
+				gp.soundMng.playSound(gunshotSound);
+			}
 		}
 	}
 	
